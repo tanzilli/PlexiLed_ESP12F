@@ -1,0 +1,132 @@
+// This is just a repository of pieces of not used code
+// I saved them just for remind
+
+#define COLOR_RED strip.Color(255,0,0)
+#define COLOR_GREEN strip.Color(0,255,0)
+#define COLOR_BLUE strip.Color(0,0,255)
+#define COLOR_YELLOW strip.Color(255,255,0)
+#define COLOR_CYAN strip.Color(0,255,255)
+#define COLOR_MAGENTA strip.Color(255,0,255)
+#define COLOR_WHITE strip.Color(255,255,255)
+#define COLOR_OFF strip.Color(0,0,0)
+
+#define BUTTON1_PIN   2
+#define BUTTON2_PIN   0
+
+pinMode(BUTTON1_PIN, INPUT_PULLUP);
+pinMode(BUTTON2_PIN, INPUT_PULLUP);
+
+long firstPixelHue[] = {0,0};
+
+void Rainbow(int line_id,int wait) {
+  for(long firstPixelHue = 0; firstPixelHue < 3*65536; firstPixelHue += 256) {
+    for(int i=0+(line_id*6); i<6+(line_id*6); i++) { 
+      int pixelHue = firstPixelHue + (i * 65536L / 6);
+      strip.setPixelColor(i, strip.gamma32(strip.ColorHSV(pixelHue)));
+    }
+    strip.show(); // Update strip with new contents
+    delay(wait);  // Pause for a moment
+  }
+}
+
+main() {
+  if(digitalRead(BUTTON1_PIN)==LOW) {
+    mode1++;
+    if(mode1>8) mode1=0;
+
+    Serial.print("Mode1: ");
+    Serial.println(mode1);
+
+    while (digitalRead(BUTTON1_PIN)==LOW) {
+    }
+  }
+
+  if(digitalRead(BUTTON2_PIN)==LOW) {
+    mode2++;
+    if(mode2>8) mode2=0;
+
+    Serial.print("Mode2: ");
+    Serial.println(mode2);
+
+    while (digitalRead(BUTTON2_PIN)==LOW) {
+    }
+  }
+
+  int line_id=0;
+  switch(mode1) {
+    case 0:
+      FixedColor(line_id,COLOR_RED);
+      break;
+    case 1:
+      FixedColor(line_id,COLOR_GREEN);
+      break;
+    case 2:
+      FixedColor(line_id,COLOR_BLUE);
+      break;
+    case 3:
+      FixedColor(line_id,COLOR_YELLOW);
+      break;
+    case 4:
+      FixedColor(line_id,COLOR_CYAN);
+      break;
+    case 5:
+      FixedColor(line_id,COLOR_MAGENTA);
+      break;
+    case 6:
+      FixedColor(line_id,COLOR_WHITE);
+      break;
+    case 7:
+      FixedColor(line_id,COLOR_OFF);
+      break;
+    case 8:
+      firstPixelHue[line_id] += 256;
+      if (firstPixelHue[line_id] >= 3*65536) firstPixelHue[line_id]=0;
+
+      for(int i=0+(line_id*6); i<6+(line_id*6); i++) { 
+        int pixelHue = firstPixelHue[line_id] + (i * 65536L / 6);
+        strip.setPixelColor(i, strip.gamma32(strip.ColorHSV(pixelHue)));
+      }
+      strip.show();
+      delay(10);
+      break;
+  }
+
+  line_id=1;
+  switch(mode2) {
+    case 0:
+      FixedColor(line_id,COLOR_RED);
+      break;
+    case 1:
+      FixedColor(line_id,COLOR_GREEN);
+      break;
+    case 2:
+      FixedColor(line_id,COLOR_BLUE);
+      break;
+    case 3:
+      FixedColor(line_id,COLOR_YELLOW);
+      break;
+    case 4:
+      FixedColor(line_id,COLOR_CYAN);
+      break;
+    case 5:
+      FixedColor(line_id,COLOR_MAGENTA);
+      break;
+    case 6:
+      FixedColor(line_id,COLOR_WHITE);
+      break;
+    case 7:
+      FixedColor(line_id,COLOR_OFF);
+      break;
+    case 8:
+      firstPixelHue[line_id] += 256;
+      if (firstPixelHue[line_id] >= 3*65536) firstPixelHue[line_id]=0;
+
+      for(int i=0+(line_id*6); i<6+(line_id*6); i++) { 
+        int pixelHue = firstPixelHue[line_id] + (i * 65536L / 6);
+        strip.setPixelColor(i, strip.gamma32(strip.ColorHSV(pixelHue)));
+      }
+      strip.show();
+      delay(10);
+      break;
+  }
+}
